@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Tax Assistant Navigation</title>
+
+    <style>
+        /* ----------------------------------
+        CSS STYLING
+        ----------------------------------
+        */
+        :root {
+            /* Colors: Deep Blue theme */
+            --primary-blue: #007bff; 
+            --secondary-blue: #0056b3; 
+            --white-element: #FFFFFF; 
+            --text-color: #333;
+        }
+
+        body {
+            /* Background: Subtle light blue/gray gradient */
+            background: linear-gradient(to bottom, #f5f7fa, #d5dee7); 
+            
+            /* Layout centers everything vertically and horizontally */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Keeps content near the top */
+            align-items: center; /* Centers content horizontally */
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 50px; 
+            color: var(--text-color); /* Dark text color */
+        }
+
+        h1 {
+            color: var(--primary-blue); 
+            font-size: 2.8em;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .description {
+            text-align: center;
+            max-width: 650px;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+            line-height: 1.5;
+            color: #555;
+            /* Blue line below description */
+            border-bottom: 2px solid var(--primary-blue); 
+            padding-bottom: 25px;
+        }
+
+        /* The buttons were already centered vertically, but we ensure the container is tidy */
+        .button-container {
+            display: flex;
+            flex-direction: column; /* Stack buttons vertically */
+            gap: 20px; 
+            padding: 40px;
+            border-radius: 15px;
+            background-color: var(--white-element); 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
+        }
+
+        .nav-button {
+            display: block; 
+            width: 320px; 
+            padding: 15px 30px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 10px;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            
+            background-color: var(--primary-blue); 
+            color: white; 
+        }
+
+        .nav-button:hover {
+            background-color: var(--secondary-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Smart tax Assistant</h1>
+    
+    <p class="description">
+        The Smart Tax Filing Assistant is an AI-powered web tool that automates tax calculation and
+        provides personalized saving suggestions.
+    </p>
+
+    <div class="button-container">
+        <a href="taxcal/index.html" class="nav-button">
+            Know Your Regime
+        </a>
+
+        <a href="taxsuggest/index.html" class="nav-button">
+            Get Suggestions
+        </a>
+        
+        <a href="taxchat/index.html" class="nav-button">
+            Try Our Chatbot
+        </a>
+    </div>
+
+</body>
+</html>

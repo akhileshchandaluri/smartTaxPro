@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenRouter Chatbot</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #e6f0ff; /* soft blue background */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        background: white;
+        width: 600px;
+        max-width: 95%;
+        height: 600px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .header {
+        background: #007bff; /* blue header */
+        color: white;
+        padding: 15px;
+        font-size: 20px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .chat-messages {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        background: #f0f5ff; /* very light blue */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-messages p {
+        margin: 8px 0;
+        padding: 12px 18px;
+        border-radius: 20px;
+        max-width: 70%;
+        font-size: 16px;
+        line-height: 1.4;
+    }
+
+    .user-msg {
+        background: #007bff;
+        color: white;
+        align-self: flex-end;
+    }
+
+    .ai-msg {
+        background: #d9e6ff;
+        color: #000;
+        align-self: flex-start;
+    }
+
+    .input-area {
+        display: flex;
+        padding: 10px 15px;
+        border-top: 1px solid #ccc;
+        background: white;
+    }
+
+    .input-area input {
+        flex: 1;
+        padding: 12px 15px;
+        border-radius: 20px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        outline: none;
+    }
+
+    .input-area button {
+        margin-left: 10px;
+        padding: 12px 20px;
+        border: none;
+        background: #007bff;
+        color: white;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background 0.3s;
+    }
+
+    .input-area button:hover {
+        background: #0056b3;
+    }
+
+    /* Scrollbar for chat messages */
+    .chat-messages::-webkit-scrollbar {
+        width: 8px;
+    }
+    .chat-messages::-webkit-scrollbar-track {
+        background: #f0f5ff;
+        border-radius: 10px;
+    }
+    .chat-messages::-webkit-scrollbar-thumb {
+        background: #007bff;
+        border-radius: 10px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">OpenRouter Chatbot</div>
+    <div class="chat-messages" id="chat"></div>
+    <div class="input-area">
+        <input type="text" id="message" placeholder="Type your message..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+async function sendMessage() {
+    const msgInput = document.getElementById("message");
+    const msg = msgInput.value.trim();
+    if (!msg) return;
+
+    const chat = document.getElementById("chat");
+
+    // Add user message
+    const userMsgEl = document.createElement("p");
+    userMsgEl.className = "user-msg";
+    userMsgEl.textContent = msg;
+    chat.appendChild(userMsgEl);
+    chat.scrollTop = chat.scrollHeight;
+
+    msgInput.value = "";
+    msgInput.disabled = true;
+
+    try {
+        const res = await fetch("http://127.0.0.1:5000/chatbot", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: msg })
+        });
+        const data = await res.json();
+
+        // Add AI response
+        const aiMsgEl = document.createElement("p");
+        aiMsgEl.className = "ai-msg";
+        aiMsgEl.textContent = data.response;
+        chat.appendChild(aiMsgEl);
+        chat.scrollTop = chat.scrollHeight;
+
+    } catch (err) {
+        const aiMsgEl = document.createElement("p");
+        aiMsgEl.className = "ai-msg";
+        aiMsgEl.textContent = "Error: Could not get response.";
+        chat.appendChild(aiMsgEl);
+        chat.scrollTop = chat.scrollHeight;
+    }
+
+    msgInput.disabled = false;
+    msgInput.focus();
+}
+
+// Send message on Enter key
+document.getElementById("message").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") sendMessage();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartTax: Suggestion Engine</title>
+    <style>
+        /* Basic Styling (You can replace this with your project's main CSS) */
+        body { font-family: 'Arial', sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1, h2, h3 { color: #0056b3; border-bottom: 2px solid #0056b3; padding-bottom: 5px; margin-top: 20px;}
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input[type="text"], input[type="number"], select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        button:hover { background-color: #0056b3; }
+        .radio-group { display: flex; gap: 20px; margin-top: 5px; }
+        .radio-group label { font-weight: normal; display: inline-block; }
+        #results-container { min-height: 200px; } /* Ensure space for results */
+
+        /* Styles for the JavaScript-injected results */
+        .summary-flex { display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 20px; }
+        .summary-tile { text-align: center; padding: 15px; border: 1px solid #ddd; border-radius: 5px; margin: 10px; flex: 1 1 250px; }
+        .tax-amount { font-size: 1.5em; font-weight: bold; }
+        .suggestion-list { list-style-type: none; padding: 0; }
+        .suggestion-item { background: #eef; padding: 10px; margin-bottom: 8px; border-radius: 5px; border-left: 5px solid #007bff; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>SmartTax: Deduction Suggestion Engine</h1>
+        <p>Enter your financial details to get personalized investment suggestions to reduce your taxable income.</p>
+
+        <form id="tax-form">
+            <h2>1. Personal Details & Income</h2>
+
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" value="30" required min="18">
+            </div>
+            
+            <div class="form-group">
+                <label for="salary">Gross Annual Salary (₹):</label>
+                <input type="number" id="salary" name="salary" value="1000000" required>
+            </div>
+
+            <div class="form-group">
+                <label for="capital_gains">Capital Gains / Other Income (₹):</label>
+                <input type="number" id="capital_gains" name="capital_gains" value="0">
+            </div>
+            
+            <h2>2. Existing Deductions & Loans</h2>
+
+            <div class="form-group">
+                <label for="deductions_80c">Existing 80C Investments (e.g., PPF, EPF, LIC, ELSS) (₹):</label>
+                <input type="number" id="deductions_80c" name="deductions_80c" value="0">
+            </div>
+
+            <div class="form-group">
+                <label for="deductions_80d">Existing 80D Health Insurance Premium (₹):</label>
+                <input type="number" id="deductions_80d" name="deductions_80d" value="0">
+            </div>
+
+            <div class="form-group">
+                <label for="home_loan_interest">Home Loan Interest Paid in current year (₹):</label>
+                <input type="number" id="home_loan_interest" name="home_loan_interest" value="0">
+            </div>
+            
+            <div class="form-group">
+                <label>Do you own multiple housing properties?</label>
+                <div class="radio-group">
+                    <input type="radio" id="prop_no" name="multiple_properties" value="no" checked>
+                    <label for="prop_no">No (Self-occupied)</label>
+                    <input type="radio" id="prop_yes" name="multiple_properties" value="yes">
+                    <label for="prop_yes">Yes (Rented out/Deemed let-out)</label>
+                </div>
+            </div>
+
+            <h2>3. Tax Regime Selection</h2>
+            <div class="form-group">
+                <label>Select Tax Regime for Calculation:</label>
+                <div class="radio-group">
+                    <input type="radio" id="regime_old" name="tax_regime" value="old" checked>
+                    <label for="regime_old">Old Tax Regime (With Deductions)</label>
+                    <input type="radio" id="regime_new" name="tax_regime" value="new">
+                    <label for="regime_new">New Tax Regime (Lower Slabs, Few Deductions)</label>
+                </div>
+            </div>
+
+            <button type="submit" id="calculate-btn">Get Personalized Suggestions</button>
+        </form>
+        
+        <hr>
+
+        <div id="results-container">
+            </div>
+        
+    </div>
+
+    <script src="suggestions.js"></script>
+</body>
+</html>

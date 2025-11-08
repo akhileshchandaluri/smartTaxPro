@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Tax Calculator</title>
+<style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
+    .container { background: white; padding: 20px; border-radius: 10px; max-width: 600px; margin: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.2);}
+    label { display: block; margin: 10px 0 5px; }
+    input { width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; }
+    button { padding: 10px 20px; border: none; border-radius: 5px; background: #007bff; color: white; cursor: pointer; }
+    .result { margin-top: 20px; font-weight: bold; }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Smart Tax Calculator</h2>
+
+    <label for="salary">Annual Salary (₹):</label>
+    <input type="number" id="salary" placeholder="Enter your salary">
+
+    <label for="capitalGains">Capital Gains (₹):</label>
+    <input type="number" id="capitalGains" placeholder="Enter capital gains">
+
+    <label for="sec80c">Section 80C Deduction (₹):</label>
+    <input type="number" id="sec80c" placeholder="Enter 80C deduction">
+
+    <label for="sec80d">Section 80D Deduction (₹):</label>
+    <input type="number" id="sec80d" placeholder="Enter 80D deduction">
+
+    <label for="homeLoan">Home Loan Interest Deduction (₹):</label>
+    <input type="number" id="homeLoan" placeholder="Enter home loan interest">
+
+    <button onclick="calculateTax()">Calculate Tax</button>
+
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+function calculateOldTax(salary, capitalGains, sec80c, sec80d, homeLoan) {
+    let taxableIncome = salary - (sec80c + sec80d + homeLoan);
+    taxableIncome = Math.max(taxableIncome, 0);
+
+    let tax = 0;
+    if (taxableIncome <= 250000) tax = 0;
+    else if (taxableIncome <= 500000) tax = 0.05 * (taxableIncome - 250000);
+    else if (taxableIncome <= 1000000) tax = 12500 + 0.2 * (taxableIncome - 500000);
+    else tax = 112500 + 0.3 * (taxableIncome - 1000000);
+
+    tax += 0.1 * capitalGains; // simple capital gains tax
+    return tax;
+}
+
+function calculateNewTax(salary, capitalGains) {
+    let taxableIncome = salary;
+    let tax = 0;
+    if (taxableIncome <= 250000) tax = 0;
+    else if (taxableIncome <= 500000) tax = 0.05 * (taxableIncome - 250000);
+    else if (taxableIncome <= 750000) tax = 12500 + 0.1 * (taxableIncome - 500000);
+    else if (taxableIncome <= 1000000) tax = 37500 + 0.15 * (taxableIncome - 750000);
+    else if (taxableIncome <= 1250000) tax = 75000 + 0.2 * (taxableIncome - 1000000);
+    else if (taxableIncome <= 1500000) tax = 125000 + 0.25 * (taxableIncome - 1250000);
+    else tax = 187500 + 0.3 * (taxableIncome - 1500000);
+
+    tax += 0.1 * capitalGains; // simple capital gains tax
+    return tax;
+}
+
+function calculateTax() {
+    let salary = parseFloat(document.getElementById('salary').value) || 0;
+    let capitalGains = parseFloat(document.getElementById('capitalGains').value) || 0;
+    let sec80c = parseFloat(document.getElementById('sec80c').value) || 0;
+    let sec80d = parseFloat(document.getElementById('sec80d').value) || 0;
+    let homeLoan = parseFloat(document.getElementById('homeLoan').value) || 0;
+
+    let oldTax = calculateOldTax(salary, capitalGains, sec80c, sec80d, homeLoan);
+    let newTax = calculateNewTax(salary, capitalGains);
+
+    let recommended = oldTax < newTax ? "Old Tax Regime is better" : "New Tax Regime is better";
+
+    document.getElementById('result').innerHTML = `
+        Tax under Old Regime: ₹${oldTax.toFixed(2)} <br>
+        Tax under New Regime: ₹${newTax.toFixed(2)} <br>
+        <strong>${recommended}</strong>
+    `;
+}
+</script>
+</body>
+</html>
