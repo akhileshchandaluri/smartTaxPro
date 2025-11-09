@@ -1,3 +1,5 @@
+To start go to startpage/taxlogin/public/index.html
+
 Purpose:
 To help users calculate and file taxes intelligently by comparing old vs new tax regimes, guiding them on the best options, and assisting with tax-related queries via a chatbot interface.
 
